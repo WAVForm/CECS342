@@ -18,13 +18,8 @@ void copy_arr(int* from, int* to, int n){
     }
 }
 
-int str_match(char* arr, char* sorted, int n){
-    for(int i = 0; i < n; i++){
-        if(arr[i] != sorted[i]){
-            return 0;
-        }
-    }
-    return 1;
+int isSorted(int* a, int n){
+    
 }
 
 void quick_sort(int *a, int n){
