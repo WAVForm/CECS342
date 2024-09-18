@@ -1,7 +1,5 @@
-
-//includes
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 char* arr_to_str(int* a, int n){
     char* str = (char*)malloc((n*sizeof(char))+1);
@@ -12,14 +10,35 @@ char* arr_to_str(int* a, int n){
     return str;
 }
 
+int* str_to_arr(char* a, int n){
+    int* arr = (int*)malloc(n*sizeof(int));
+    for(int i = 0; i < n; i++){
+        arr[i] = (int)(a[i]-'0');
+    }
+    return arr;
+}
+
 void copy_arr(int* from, int* to, int n){
     for(int i = 0; i < n; i++){
         to[i] = from[i];
     }
 }
 
+int get_n(char* str){
+    int i = 0;
+    while(str[i] != '\0'){
+        i++;
+    }
+    return i;
+}
+
 int isSorted(int* a, int n){
-    
+    for(int i = 0; i < n-1; i++){
+        if(a[i] > a[i+1]){
+            return 0;
+        }
+    }
+    return 1;
 }
 
 void quick_sort(int *a, int n){
@@ -92,110 +111,23 @@ void merge_sort(int *a, int n){
     free(t); //dealloc t
 }
 
-int merge_test(){
-    int test1[] = {3,9,2,9,0,9,5,3,9,7};
-    int n1 = sizeof(test1)/sizeof(test1[0]);
-    int test2[] = {6,6,2,8,7,2,2,4};
-    int n2 = sizeof(test2)/sizeof(test2[0]);
-    int test3[] = {3,8,5,0,4,0,2,2,0};
-    int n3 = sizeof(test3)/sizeof(test3[0]);
-    int test4[] = {9,4,2,4,0,2,7};
-    int n4 = sizeof(test4)/sizeof(test4[0]);
-    int test5[] = {8,9,3,4,2,2,7,6,8};
-    int n5 = sizeof(test5)/sizeof(test5[0]);
-    int test6[] = {0};
-    int n6 = sizeof(test6)/sizeof(test6[0]);
-    int test7[] = {1,2,3,4,5};
-    int n7 = sizeof(test7)/sizeof(test7[0]);
-
-    merge_sort(test1, n1);
-    if(!str_match(arr_to_str(test1, n1),"0233579999",n1)){
-        return 1;
+int main(int argc, char* argv[]){
+    for(int i = 1; i < argc; i++){
+        int n = get_n(argv[i]);
+        int* qArr = str_to_arr(argv[i], n);
+        int* mArr = str_to_arr(argv[i], n);
+        quick_sort(qArr, n);
+        merge_sort(mArr, n);
+        printf("%s,%s\n", arr_to_str(qArr, n), arr_to_str(mArr, n));
+        if(!isSorted(qArr, n)){
+            return -1;
+        }
+        if(!isSorted(mArr, n)){
+            return -1;
+        }
+        free(qArr);
+        free(mArr);
     }
-    merge_sort(test2, n2);
-    if(!str_match(arr_to_str(test2, n2), "22246678", n2)){
-        return 2;
-    }
-    merge_sort(test3, n3);
-    if(!str_match(arr_to_str(test3, n3), "000223458", n3)){
-        return 3;
-    }
-    merge_sort(test4, n4);
-    if(!str_match(arr_to_str(test4, n4), "0224479", n4)){
-        return 4;
-    }
-    merge_sort(test5, n5);
-    if(!str_match(arr_to_str(test5, n5), "223467889", n5)){
-        return 5;
-    }
-    merge_sort(test6, n6);
-    if(!str_match(arr_to_str(test6, n6), "0", n6)){
-        return 6;
-    }
-    merge_sort(test7, n7);
-    if(!str_match(arr_to_str(test7, n7), "12345", n7)){
-        return 7;
-    }
-    return 0;
-}
-
-int quick_test(){
-    int test1[] = {3,9,2,9,0,9,5,3,9,7};
-    int n1 = sizeof(test1)/sizeof(test1[0]);
-    int test2[] = {6,6,2,8,7,2,2,4};
-    int n2 = sizeof(test2)/sizeof(test2[0]);
-    int test3[] = {3,8,5,0,4,0,2,2,0};
-    int n3 = sizeof(test3)/sizeof(test3[0]);
-    int test4[] = {9,4,2,4,0,2,7};
-    int n4 = sizeof(test4)/sizeof(test4[0]);
-    int test5[] = {8,9,3,4,2,2,7,6,8};
-    int n5 = sizeof(test5)/sizeof(test5[0]);
-    int test6[] = {0};
-    int n6 = sizeof(test6)/sizeof(test6[0]);
-    int test7[] = {1,2,3,4,5};
-    int n7 = sizeof(test7)/sizeof(test7[0]);
-
-    quick_sort(test1, n1);
-    if(!str_match(arr_to_str(test1, n1),"0233579999",n1)){
-        return 1;
-    }
-    quick_sort(test2, n2);
-    if(!str_match(arr_to_str(test2, n2), "22246678", n2)){
-        return 2;
-    }
-    quick_sort(test3, n3);
-    if(!str_match(arr_to_str(test3, n3), "000223458", n3)){
-        return 3;
-    }
-    quick_sort(test4, n4);
-    if(!str_match(arr_to_str(test4, n4), "0224479", n4)){
-        return 4;
-    }
-    quick_sort(test5, n5);
-    if(!str_match(arr_to_str(test5, n5), "223467889", n5)){
-        return 5;
-    }
-    quick_sort(test6, n6);
-    if(!str_match(arr_to_str(test6, n6), "0", n6)){
-        return 6;
-    }
-    quick_sort(test7, n7);
-    if(!str_match(arr_to_str(test7, n7), "12345", n7)){
-        return 7;
-    }
-    return 0;
-}
-
-int main(){
-    int m = merge_test();
-    if(m != 0){
-        printf("Merge Test failed at %d\n", m);
-        return -1;
-    }
-    int q = quick_test();
-    if(q != 0){
-        printf("Quick Test failed at %d\n", q);
-        return -1;
-    }
+    printf("Good!\n");
     return 0;
 }
