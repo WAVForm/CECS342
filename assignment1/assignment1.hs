@@ -1,5 +1,10 @@
 module Assignment1 where
 
+import System.Environment (getArgs) --from ChatGPT for test cases
+import Data.List (intercalate) --from ChatGPT for test cases
+import Text.Read (readMaybe) --from ChatGPT for test cases
+import Text.Printf
+
 --HELPERS
 foldR f b [] = b
 foldR f b (x:xs) = x `f` (foldR f b xs)
@@ -12,7 +17,7 @@ isSorted (x:y:xs) = x <= y && isSorted(y:xs)
 --HELPERS
 
 --QUICK SORT
-quickSort :: Ord a => [a] -> [a]
+quickSort :: (Ord a) => [a] -> [a]
 --from learn you a haskell
 quickSort [] = []
 quickSort (x:xs) = left ++ [x] ++ right --combine left, x, and right
@@ -21,7 +26,7 @@ quickSort (x:xs) = left ++ [x] ++ right --combine left, x, and right
 --QUICK SORT
 
 --MERGE SORT
-mergeSort :: Ord a => [a] -> [a]
+mergeSort :: (Ord a) => [a] -> [a]
 mergeSort [] = []
 mergeSort [x] = [x]
 mergeSort list = merge l r --merge left and right
@@ -43,3 +48,23 @@ split (x:xs) = foldR put ([],[]) (x:xs) --apply put to all elements
 
 put x (l,r) = (x:r, l) --put x at the front of r and swap l and r so they are treated as the other
 --MERGE SORT
+
+--Everything below was ChatGPT so that test cases can be ran from console
+main :: IO ()
+main = do
+    args <- getArgs
+    case args of
+        [input] -> case readMaybe input :: Maybe [Int] of
+            Just nums -> do
+                printf "Array of size: %d: " (length nums)
+                let isMSSorted = isSorted(mergeSort nums)
+                let isQSSorted = isSorted(quickSort nums)
+                printf "%s\n" (if isMSSorted && isQSSorted then "Pass" else "Fail")
+            Nothing -> putStrLn "Error: Could not parse input list."
+        [] -> do
+            let msEmptySorted = isSorted(mergeSort []::[Int])
+            let qsEmptySorted = isSorted(quickSort []::[Int])
+            printf "%s\n" (if msEmptySorted && qsEmptySorted then "Pass" else "Fail")
+        _ -> putStrLn "Usage: runhaskell Main.hs \"[1,5,3,2,6,4]\""
+
+    

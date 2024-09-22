@@ -53,19 +53,15 @@ int reverse(int a){
 char* haskell_array(int arr){
     int n = num_len(arr)*2;
     arr = reverse(arr);
-    char* h = (char*)malloc((((n)+2)*sizeof(char))+1); //digits and commas + brackets + \0
+    char* h = (char*)malloc((((n))*sizeof(char))+1); //digits and commas + brackets + \0
     for(int i = 0; i < (n); i+=2){
-        if(i==0){
-            h[i] = '[';
-        }
-        else{
+        if(i!=0){
             h[i] = ',';
         }
         h[i+1] = (char)((arr%10)+'0');
         arr /= 10;
     }
-    h[n] = ']';
-    h[n+1] = '\0';
+    h[n] = '\0';
     return h;
     
 }
@@ -80,20 +76,24 @@ int main(int argc, char* argv[]){
         return -1;
     }
     //arg 1 is amt, arg 2 is type
-    for(int i = 0; i < str_to_int(argv[1]); i++){
-        if(char_match(argv[2][0], 'C') || char_match(argv[2][0], 'c')){
-            printf("%d ", rand());
-        }
-        else if(char_match(argv[2][0], 'H') || char_match(argv[2][0], 'h')){
-            int r = rand();
-            while(reverse(r) < 0){
-                r = rand();
+    if(char_match(argv[2][0], 'H') || char_match(argv[2][0], 'h')){
+        printf("%c", '[');
+        for(int i = 0; i < str_to_int(argv[1])-1; i++){
+            if(rand()%2==1){
+                printf("%c", '-');
             }
-            char* h = haskell_array(r);
-            printf("%s ", h);
-            free(h);
+            printf("%d,", rand()%10);
         }
+        printf("%d", rand()%10);
+        printf("%c", ']');
     }
-    
-    
+    if(char_match(argv[2][0], 'C') || char_match(argv[2][0], 'c')){
+        for(int i = 0; i < str_to_int(argv[1])-1; i++){
+            if(rand()%2==1){
+                printf("%c", '-');
+            }
+            printf("%d,", rand()%10);
+        }
+        printf("%d", rand()%10);
+    }
 }
