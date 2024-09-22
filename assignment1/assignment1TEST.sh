@@ -1,24 +1,25 @@
 echo Making the executable files
 gcc arraymaker.c -o arraymaker
 gcc assignment1.c -o assignment1C
+ghc assignment1.hs -o assignment1HS
 
 echo Testing for edge cases
 
 echo =Empty Set=
 echo "C: $(./assignment1C )"
-echo "Haskell: $(runhaskell assignment1.hs )"
+echo "Haskell: $(./assignment1HS )"
 
 echo =Single Element=
 echo "C: $(./assignment1C 1)"
-echo "Haskell: $(runhaskell assignment1.hs [1])"
+echo "Haskell: $(./assignment1HS [1])"
 
 echo =Already Sorted=
 echo "C: $(./assignment1C 1,2,3,4,5)"
-echo "Haskell: $(runhaskell assignment1.hs [1,2,3,4,5])"
+echo "Haskell: $(./assignment1HS [1,2,3,4,5])"
 
 echo =Negatives=
 echo "C: $(./assignment1C 10,0,-2,-1,-7,2)"
-echo "Haskell: $(runhaskell assignment1.hs [10,0,-2,-1,-7,2])"
+echo "Haskell: $(./assignment1HS [10,0,-2,-1,-7,2])"
 
 echo "=Other Types (Haskell only...)"
 echo "Single string"
@@ -45,8 +46,6 @@ echo "Floats"
   echo ":quit"
 } | ghci --interactive
 
-echo "LOOK AT SYSTEM MONITOR FOR MEM USAGE"
-sleep 5
 
 echo =Stress Test C Program=
 CTIMESTART=$(date +"%s.%N")
@@ -65,26 +64,26 @@ CARRAYS=$(./arraymaker 50000 c)
 CTIMEEND=$(date +"%s.%N")
 echo "Time Taken: $(echo "$CTIMEEND - $CTIMESTART" | bc)"
 
-echo "LOOK AT SYSTEM MONITOR FOR MEM USAGE"
-sleep 5
-
 echo =Stress Test Haskell Program=
 HTIMESTART=$(date +"%s.%N")
 HARRAYS=$(./arraymaker 1 h)
-runhaskell assignment1.hs $HARRAYS
+./assignment1HS $HARRAYS
 HARRAYS=$(./arraymaker 10 h)
-runhaskell assignment1.hs $HARRAYS
+./assignment1HS $HARRAYS
 HARRAYS=$(./arraymaker 100 h)
-runhaskell assignment1.hs $HARRAYS
+./assignment1HS $HARRAYS
 HARRAYS=$(./arraymaker 1000 h)
-runhaskell assignment1.hs $HARRAYS
+./assignment1HS $HARRAYS
 HARRAYS=$(./arraymaker 10000 h)
-runhaskell assignment1.hs $HARRAYS
+./assignment1HS $HARRAYS
 HARRAYS=$(./arraymaker 50000 h)
-runhaskell assignment1.hs $HARRAYS
+/usr/bin/time -v ./assignment1HS $HARRAYS
 HTIMEEND=$(date +"%s.%N")
 echo "Time Taken: $(echo "$HTIMEEND - $HTIMESTART" | bc)"
 
 echo Removing executables
 rm arraymaker
 rm assignment1C
+rm assignment1HS
+rm assignment1.o
+rm assignment1.hi

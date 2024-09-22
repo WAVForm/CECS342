@@ -1,4 +1,4 @@
-module Assignment1 where
+module Main where
 
 import System.Environment (getArgs) --from ChatGPT for test cases
 import Data.List (intercalate) --from ChatGPT for test cases
